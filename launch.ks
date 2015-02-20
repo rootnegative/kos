@@ -10,11 +10,13 @@ gear off
 
 clearscreen.
 
+//not sure if this is a good idea to explicitly declare variables.
 declare targetapoapsis      //the target apoapsis for the flight
 declare targetperiapsis     //the target periapsis for the flight
 declare throttlevalue       //modification of throttle power
 declare scriptphase         //variable for controlling where the program is up to in the launch.
 
+//set initial conditions
 set targetapoapsis to 100000
 set targetperiapsis to 100000
 set scriptphase to "Initializing"
@@ -22,7 +24,19 @@ set Boosters to 0
 
 //Throttle Control
       //Ensure speed doesn't exceed terminal velocity
-      //Include throttle modification to fine tune apoapsis
+      //Include throttle modification to fine tune apoapsis.
+      
+//pseudocode for what i want to do. need to code properly      
+If Velocity > TerminalVelocity
+      Set throttlevalue to throttlevalue - 0.1
+      Lock throttle to throttlevalue
+      
+If throttlevalue = 1 and timetoapo is increasing
+      set throttlevalue to throttlevalue - 0.1 //need to ensure throttle value can't be less than 0.
+      
+If throttlevalue < 1 and timetoapo is decreasing
+      set throttlevalue to throttlevalue + 0.1 //need to ensure throttle value can't be more than 1.
+
       
 //Stage Control.
 If Stage:LiquidFuel < 0.001
@@ -33,6 +47,7 @@ If Stage:LiquidFuel < 0.001
   wait 1
   lock throttle to throttlevalue
 
+//need to figure out how to make sure this is checked once at the start of the script and never again.
 If Vessel:SolidFuel > 1                 //Work out if we have boosters
   set boosters to 1                     //We have boosters.
   print "Boosters Detected"
@@ -59,17 +74,29 @@ ELSE
 
   //Vertical Ascent
 Until Altitude > 8000
-  lock steering to heading(90,90
+  lock steering to heading(90,90)
+  lock throttle to throttlevalue
   
   If altitude > 100                     //need to make sure this triggers only once.
-  print vessel:name + "has cleared the tower"
-  print "initiating roll program"
+      print vessel:name + "has cleared the tower"
+      print "initiating roll program"
   
     //Set rotation to be a negative g turn
   
   //Gravity Turn
+  
+//pseudocode
+  if timetoapo is increasing
+  
+  
+  
+  //kk4tee's gravity turn code
+  // set targetPitch to max( 5, 90 * (1 - ALT:RADAR / 50000)). 
+  //          //Pitch over gradually until levelling out to 5 degrees at 50km
+  //  lock steering to heading ( 90, targetPitch). //Heading 90' (East), then target pitch
 
   //Circularization
+
 
   //Completion
 
